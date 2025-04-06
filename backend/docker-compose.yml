@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  rmq:
+    image: rabbitmq:3.8-management  # Use the RabbitMQ image with management plugin
+    container_name: wasmrabbitmq
+    ports:
+      - "5672:5672"  # RabbitMQ default port for messaging
+      - "15672:15672"  # RabbitMQ management UI port
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq  # This volume will persist RabbitMQ data
+    #restart: always  # Automatically restart the container if it stops
+
+  db:
+    image: postgres:17.2-bullseye  # Use the official PostgreSQL image
+    container_name: iwasmpostgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: wasmide
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # This volume will persist PostgreSQL data
+    ports:
+      - "5432:5432"  # Expose PostgreSQL on port 5432
+    #    restart: always  # Automatically restart the container if it stops
+
+volumes:
+  postgres_data:
+  rabbitmq_data:
+
+
+
+
